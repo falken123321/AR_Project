@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player
 {
-    private List<Card> hand;
+    public List<Card> hand { get; private set; }
 
     public List<Card> SetCards(Card[] cards)
     {

@@ -4,24 +4,6 @@ using System.Collections.Generic;
 using CardEums;
 using UnityEngine;
 
-namespace Hands
-{
-    enum Plays //Sorteret efter power af hand
-    {
-        RoyalFlush,
-        StraightFlus,
-        FourOfAKind,
-        FullHouse,
-        Flush,
-        Straight,
-        ThreeOfAKind,
-        TwoPair,
-        Pair,
-        HighCard,
-        None,
-    }
-}
-
 public class Deck
 {
 
