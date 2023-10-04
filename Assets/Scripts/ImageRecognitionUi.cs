@@ -22,13 +22,17 @@ public class ImageRecognitionUi : MonoBehaviour
 
     void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
+        Debug.Log("OnTrackedImagesChanged called");
+
         foreach (var trackedImage in eventArgs.added)
         {
+            Debug.Log("Image added: " + trackedImage.referenceImage.name);
             UpdateRecognitionText(trackedImage);
         }
 
         foreach (var trackedImage in eventArgs.updated)
         {
+            Debug.Log("Image updated: " + trackedImage.referenceImage.name);
             UpdateRecognitionText(trackedImage);
         }
     }
@@ -38,6 +42,8 @@ public class ImageRecognitionUi : MonoBehaviour
         if (trackedImage.trackingState == TrackingState.Tracking)
         {
             recognitionText.text = "Recognized: " + trackedImage.referenceImage.name;
+            Debug.Log("Text updated to: " + recognitionText.text);
         }
     }
+
 }
