@@ -27,13 +27,13 @@ public class Board : MonoBehaviour
 {
     private Deck DealerDeck; //Kort i dealerns d�k / dem man ikke kender / dem enemy spiller kan have
     private List<Card> boardCards; //Kort p� bordet
-    private Player player; // Dine kort
+    public Player player; // Dine kort
     private Plays play; // Viser om du har et play
 
     private List<Card> combinedCard;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         this.DealerDeck = new Deck();
         this.player = new Player();
@@ -42,11 +42,6 @@ public class Board : MonoBehaviour
         this.play = Plays.None;
     }
 
-    void RegisterCard(Card i)
-    {
-        print(i.suit);
-    }
-    
     void RegisterHand()
     {
 
@@ -60,7 +55,7 @@ public class Board : MonoBehaviour
 
     //STARTER P� HAND FUNCTIONERNE -------------------------------------------------
     //
-    void CheckHand()
+    public void CheckHand()
     {
         if (this.player == null) return;
         //K�r alle functionerne under

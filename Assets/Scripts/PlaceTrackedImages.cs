@@ -1,20 +1,21 @@
 using System;
 using System.Collections.Generic;
+using CardEums;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
-using TMPro;
+
 [RequireComponent(typeof(ARTrackedImageManager))]
 public class PlaceTrackedImages : MonoBehaviour
 {
+    //Reffrence to boardScript
+    public Board boardScript;
     // Reference to AR tracked image manager component
     private ARTrackedImageManager _trackedImagesManager;
 
     // List of prefabs to instantiate - these should be named the same
     // as their corresponding 2D images in the reference image library 
-    //public GameObject[] ArPrefabs;
-    public TextMeshProUGUI  recognitionText;
-    private int Counter;
+    public GameObject[] ArPrefabs;
 
     // Keep dictionary array of created prefabs
     private readonly Dictionary<string, GameObject> _instantiatedPrefabs = new Dictionary<string, GameObject>();
@@ -38,29 +39,60 @@ public class PlaceTrackedImages : MonoBehaviour
     }
 
     // Event Handler
-    void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
+    private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
-        Debug.Log("OnTrackedImagesChanged called");
 
+        // Loop through all new tracked images that have been detected
         foreach (var trackedImage in eventArgs.added)
         {
-            Counter++;
-            Debug.Log("Image added: " + trackedImage.referenceImage.name + "Counter = " + Counter);
-            UpdateRecognitionText(trackedImage);
+            // Get the name of the reference image
+            var imageName = trackedImage.referenceImage.name;
+            // Now loop over the array of prefabs
+            foreach (var curPrefab in ArPrefabs)
+            {
+                // Check whether this prefab matches the tracked image name, and that
+                // the prefab hasn't already been created
+                if (string.Compare(curPrefab.name, imageName, StringComparison.OrdinalIgnoreCase) == 0
+                    && !_instantiatedPrefabs.ContainsKey(imageName))
+                {
+                    // Instantiate the prefab, parenting it to the ARTrackedImage
+                    var newPrefab = Instantiate(curPrefab, trackedImage.transform);
+                    
+                    //Adskil reffrence name og lav carded ud af det
+                    var imageNameCpy = imageName.Split('_');
+                    var stringType = imageNameCpy[0];
+                    var stringSuit = imageNameCpy[1];
+
+                    // Register the new card in the codebase
+                    Card c = new Card(CardType.A, Suits.Clubs);
+                    Card c2 = new Card(CardType.A, Suits.Hearts);
+                    Card[] cArray = {c, c2};
+                    boardScript.Start();
+                    boardScript.player.SetCards(cArray);
+                    
+                    // Add the created prefab to our array
+                    _instantiatedPrefabs[imageName] = newPrefab;
+                }
+            }
         }
 
+        // For all prefabs that have been created so far, set them active or not depending
+        // on whether their corresponding image is currently being tracked
         foreach (var trackedImage in eventArgs.updated)
         {
-            Debug.Log("Image updated: " + trackedImage.referenceImage.name);
-            UpdateRecognitionText(trackedImage);
+            _instantiatedPrefabs[trackedImage.referenceImage.name]
+                .SetActive(trackedImage.trackingState == TrackingState.Tracking);
         }
-    }
 
-    void UpdateRecognitionText(ARTrackedImage trackedImage)
-    {
-        
-        recognitionText.text = "Recognized: " + trackedImage.referenceImage.name;
-        Debug.Log("Text updated to: " + recognitionText.text);
-        
+        // If the AR subsystem has given up looking for a tracked image
+        foreach (var trackedImage in eventArgs.removed)
+        {
+            // Destroy its prefab
+            Destroy(_instantiatedPrefabs[trackedImage.referenceImage.name]);
+            // Also remove the instance from our array
+            _instantiatedPrefabs.Remove(trackedImage.referenceImage.name);
+            // Or, simply set the prefab instance to inactive
+            //_instantiatedPrefabs[trackedImage.referenceImage.name].SetActive(false);
+        }
     }
 }
