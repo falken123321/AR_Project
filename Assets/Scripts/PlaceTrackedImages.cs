@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CardEums;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -7,6 +8,8 @@ using UnityEngine.XR.ARSubsystems;
 [RequireComponent(typeof(ARTrackedImageManager))]
 public class PlaceTrackedImages : MonoBehaviour
 {
+    //Reffrence to boardScript
+    public Board boardScript;
     // Reference to AR tracked image manager component
     private ARTrackedImageManager _trackedImagesManager;
 
@@ -54,6 +57,19 @@ public class PlaceTrackedImages : MonoBehaviour
                 {
                     // Instantiate the prefab, parenting it to the ARTrackedImage
                     var newPrefab = Instantiate(curPrefab, trackedImage.transform);
+                    
+                    //Adskil reffrence name og lav carded ud af det
+                    var imageNameCpy = imageName.Split('_');
+                    var stringType = imageNameCpy[0];
+                    var stringSuit = imageNameCpy[1];
+
+                    // Register the new card in the codebase
+                    Card c = new Card(CardType.A, Suits.Clubs);
+                    Card c2 = new Card(CardType.A, Suits.Hearts);
+                    Card[] cArray = {c, c2};
+                    boardScript.Start();
+                    boardScript.player.SetCards(cArray);
+                    
                     // Add the created prefab to our array
                     _instantiatedPrefabs[imageName] = newPrefab;
                 }
