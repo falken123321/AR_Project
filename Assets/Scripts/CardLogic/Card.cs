@@ -13,7 +13,7 @@ namespace CardEums
         Diamonds
     };
 
-    public enum Type
+    public enum CardType
     {
         A = 1,
         Two = 2,
@@ -34,9 +34,9 @@ namespace CardEums
 public class Card
 {
     public Suits suit { get; private set; }
-    public Type type { get; private set; }
+    public CardType type { get; private set; }
 
-    public Card(Type type, Suits suit)
+    public Card(CardType type, Suits suit)
     {
         this.type = type;
         this.suit = suit;

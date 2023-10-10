@@ -1,0 +1,133 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using CardEums;
+using Hands;
+using UnityEngine;
+
+namespace Hands
+{
+    enum Plays //Sorteret efter power af hand
+    {
+        RoyalFlush,
+        StraightFlus,
+        FourOfAKind,
+        FullHouse,
+        Flush,
+        Straight,
+        ThreeOfAKind,
+        TwoPair,
+        Pair,
+        HighCard,
+        None,
+    }
+}
+
+public class Board : MonoBehaviour
+{
+    private Deck DealerDeck; //Kort i dealerns d�k / dem man ikke kender / dem enemy spiller kan have
+    private List<Card> boardCards; //Kort p� bordet
+    private Player player; // Dine kort
+    private Plays play; // Viser om du har et play
+
+    private List<Card> combinedCard;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        this.DealerDeck = new Deck();
+        this.player = new Player();
+        this.boardCards = new List<Card>(5);
+        this.combinedCard = new List<Card>(7);
+        this.play = Plays.None;
+    }
+
+    void RegisterCard(Card i)
+    {
+        print(i.suit);
+    }
+    
+    void RegisterHand()
+    {
+
+    }
+    
+    void RegisterBoard()
+    {
+
+    }
+
+
+    //STARTER P� HAND FUNCTIONERNE -------------------------------------------------
+    //
+    void CheckHand()
+    {
+        if (this.player == null) return;
+        //K�r alle functionerne under
+
+        CheckPair();
+        CheckThreeOfAKind();
+    }
+
+    //Retunere list af pair, s� man kan se hvilke kort er pairet
+    //+ mulighed for at f� en Liste af lister af cards for at f� flere pairs
+    void CheckPair()
+    {
+        var pairs = 0;
+        List<List<Card>> cardPairs = new List<List<Card>>();
+
+        //Check if hand is pair
+        if (this.player.hand[0].type == this.player.hand[1].type)
+        {
+            pairs++;
+            List<Card> pair = new List<Card>();
+            pair.Add(this.player.hand[0]);
+            pair.Add(this.player.hand[1]);
+            cardPairs.Add(pair);
+        }
+
+        //Check hver kort p� h�nd om det pair med en p� board
+        foreach (Card card in this.player.hand) { 
+            foreach(Card boardCard in this.boardCards)
+            {
+                if(card.type == boardCard.type)
+                {
+                    pairs++;
+                    List<Card> pair = new List<Card>();
+                    pair.Add(boardCard);
+                    pair.Add(card);
+                    cardPairs.Add(pair);
+                }
+            }
+        }
+    }
+
+    bool CheckThreeOfAKind()
+    {
+        int[] suitsCount = { 0, 0, 0, 0 };
+        bool hasThreeOfAKind = false;
+
+        foreach(Card card in this.combinedCard)
+        {
+            switch (card.suit)
+            {
+                case Suits.Clubs:
+                    suitsCount[0]++; break;
+                case Suits.Diamonds:
+                    suitsCount[1]++; break;
+                case Suits.Hearts:
+                    suitsCount[2]++; break;
+                case Suits.Spades:
+                    suitsCount[3]++; break;
+            }
+        }
+
+        foreach(int i in suitsCount)
+        {
+            if (i == 3) hasThreeOfAKind = true;
+        }
+
+
+        return hasThreeOfAKind;
+    }
+}
