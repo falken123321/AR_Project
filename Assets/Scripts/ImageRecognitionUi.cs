@@ -8,7 +8,8 @@ using UnityEngine.XR.ARSubsystems;
 public class ImageRecognitionUi : MonoBehaviour
 {
     public ARTrackedImageManager trackedImageManager;
-    public TextMeshProUGUI  recognitionText;
+    public TMP_Text  recognitionText;
+    private int Counter;
 
     private void OnEnable()
     {
@@ -26,7 +27,8 @@ public class ImageRecognitionUi : MonoBehaviour
 
         foreach (var trackedImage in eventArgs.added)
         {
-            Debug.Log("Image added: " + trackedImage.referenceImage.name);
+            Counter++;
+            Debug.Log("Image added: " + trackedImage.referenceImage.name + "Counter = " + Counter);
             UpdateRecognitionText(trackedImage);
         }
 
@@ -39,11 +41,10 @@ public class ImageRecognitionUi : MonoBehaviour
 
     void UpdateRecognitionText(ARTrackedImage trackedImage)
     {
-        if (trackedImage.trackingState == TrackingState.Tracking)
-        {
+        
             recognitionText.text = "Recognized: " + trackedImage.referenceImage.name;
             Debug.Log("Text updated to: " + recognitionText.text);
-        }
+        
     }
 
 }
