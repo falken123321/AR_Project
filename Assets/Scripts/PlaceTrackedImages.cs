@@ -66,10 +66,8 @@ public class PlaceTrackedImages : MonoBehaviour
                     
                     // Register the new card in the codebase
                     Card c = new Card(type, suit);
-                    Card c2 = new Card(CardType.A, Suits.Hearts);
-                    Card[] cArray = {c, c2};
                     boardScript.Start();
-                    boardScript.player.SetCards(cArray);
+                    boardScript.player.RegisterCard(c);
                     
                     // Add the created prefab to our array
                     _instantiatedPrefabs[imageName] = newPrefab;
