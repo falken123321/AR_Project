@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using CardEums;
 using Hands;
+using TMPro;
 using UnityEngine;
 
 namespace Hands
@@ -30,6 +31,8 @@ public class Board : MonoBehaviour
     public Player player; // Dine kort
     private Plays play; // Viser om du har et play
 
+    public TextMeshProUGUI textOBJ;
+
     private List<Card> combinedCard;
 
     // Start is called before the first frame update
@@ -40,6 +43,12 @@ public class Board : MonoBehaviour
         this.boardCards = new List<Card>(5);
         this.combinedCard = new List<Card>(7);
         this.play = Plays.None;
+        displayStatus("Status: Game start");
+    }
+
+    public void Reset()
+    {
+        displayStatus("Status: Game reset");
     }
 
     void RegisterHand()
@@ -124,5 +133,11 @@ public class Board : MonoBehaviour
 
 
         return hasThreeOfAKind;
+    }
+
+    void displayStatus(string text)
+    {
+        //set Text mesh pro text
+        textOBJ.text = text;
     }
 }
