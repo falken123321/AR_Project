@@ -10,7 +10,7 @@ using CardEums; // Add this line to include the CardEums namespace
 public class ImageRecognitionUi : MonoBehaviour
 {
     public ARTrackedImageManager trackedImageManager;
-    public TMP_Text  recognitionText;
+    public TextMeshProUGUI recognitionText;
     private int Counter;
     //Reffrence to boardScript
     public Board boardScript;
@@ -35,7 +35,8 @@ public class ImageRecognitionUi : MonoBehaviour
             Counter++;
             Debug.Log("Image added: " + trackedImage.referenceImage.name + "Counter = " + Counter);
             UpdateRecognitionText(trackedImage);
-            
+
+            boardScript.displayStatus("Status: Registed Card");
             //Adskil reffrence name og lav carded ud af det
             var imageName = trackedImage.referenceImage.name;
             var imageNameCpy = imageName.Split('_');
@@ -43,10 +44,9 @@ public class ImageRecognitionUi : MonoBehaviour
 
             Suits suit = (Suits)Enum.Parse(typeof(Suits), imageNameCpy[1], ignoreCase: true);
             CardType type = (CardType)Enum.Parse(typeof(CardType), imageNameCpy[0], ignoreCase: true);
-                    
+
             // Register the new card in the codebase
             Card c = new Card(type, suit);
-            boardScript.Start();
             boardScript.player.RegisterCard(c);
 
         }

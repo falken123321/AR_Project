@@ -135,7 +135,7 @@ public class Board : MonoBehaviour
         return hasThreeOfAKind;
     }
 
-    void displayStatus(string text)
+    public void displayStatus(string text)
     {
         //set Text mesh pro text
         textOBJ.text = text;
