@@ -10,17 +10,18 @@ namespace CardLogic
         public GameObject cardPrefab; 
         public Transform cardParent;
         public Sprite[] cardSprites;
-        private Deck Deck1;
+        public Deck deck1;
+        public int smilr;
 
         public void ShowFlop()
         {
-            if (Deck1 == null)
+            if (deck1 == null)
             {
                 Debug.LogError("Deck null!");
                 return;
             }
 
-            var cards = Deck1.DrawRandomFlopCards();
+            var cards = deck1.DrawRandomFlopCards();
     
             if (cards == null || cards.Count == 0)
             {
@@ -60,7 +61,7 @@ namespace CardLogic
 
         public void ShowNextCard()
         {
-            var card = Deck1.DrawNextCard();
+            var card = deck1.DrawNextCard();
             GameObject cardObj = Instantiate(cardPrefab, cardParent);
             
             Sprite newSprite = cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CardEums;
 using UnityEngine;
 
-public class Deck
+public class Deck : MonoBehaviour
 {
     private int drawnCount = 0; 
 
