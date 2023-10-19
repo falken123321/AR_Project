@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Deck
 {
+    private int drawnCount = 0; 
 
     public List<Card> cards { get; private set; }
 
@@ -13,7 +14,7 @@ public class Deck
     {
         this.cards = new List<Card>(52);
 
-        //Populate deck - relevant når vi skal udregne procenter
+        //Populate deck - relevant nï¿½r vi skal udregne procenter
         //Ingen grund til at shuffle?
         foreach (Suits suit in Enum.GetValues(typeof(Suits)))
         {
@@ -32,6 +33,41 @@ public class Deck
     public void ResetDeck()
     {
         PopulateDeck();
+    }
+   
+
+    public List<Card> DrawRandomFlopCards()
+    {
+        List<Card> drawnCards = new List<Card>();
+        System.Random random = new System.Random();
+
+        if (drawnCount < 3) 
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (cards.Count == 0) break;
+
+                int randomIndex = random.Next(cards.Count);
+                drawnCards.Add(cards[randomIndex]);
+                cards.RemoveAt(randomIndex);
+                drawnCount++; 
+            }
+        }
+
+        return drawnCards;
+    }
+
+    public Card DrawNextCard()
+    {
+        if (drawnCount >= 5 || cards.Count == 0) return null; 
+
+        System.Random random = new System.Random();
+        int randomIndex = random.Next(cards.Count);
+        Card drawnCard = cards[randomIndex];
+        cards.RemoveAt(randomIndex);
+        drawnCount++; 
+
+        return drawnCard;
     }
 
     public bool PopCard(Card card)
