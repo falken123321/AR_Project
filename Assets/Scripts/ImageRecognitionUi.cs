@@ -48,7 +48,7 @@ public class ImageRecognitionUi : MonoBehaviour
             // Register the new card in the codebase
             Card c = new Card(type, suit);
             boardScript.player.RegisterCard(c);
-
+            boardScript.update();
         }
 
         foreach (var trackedImage in eventArgs.updated)

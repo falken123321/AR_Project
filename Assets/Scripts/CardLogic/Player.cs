@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player
 {
     public List<Card> hand { get; private set; }
+    
 
     public Player()
     {
@@ -31,6 +32,11 @@ public class Player
     public void Fold()
     {
         hand.Clear();
+    }
+
+    public bool isHandFull()
+    {
+        return hand.Count >= 2;
     }
 
 }

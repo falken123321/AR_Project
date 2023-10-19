@@ -32,6 +32,7 @@ public class Board : MonoBehaviour
     private Plays play; // Viser om du har et play
 
     public TextMeshProUGUI textOBJ;
+    public TextMeshProUGUI instructions;
 
     private List<Card> combinedCard;
 
@@ -44,6 +45,7 @@ public class Board : MonoBehaviour
         this.combinedCard = new List<Card>(7);
         this.play = Plays.None;
         displayStatus("Status: Game start");
+        
     }
 
     public void Reset()
@@ -71,6 +73,8 @@ public class Board : MonoBehaviour
 
         CheckPair();
         CheckThreeOfAKind();
+
+        
     }
 
     //Retunere list af pair, s� man kan se hvilke kort er pairet
@@ -139,5 +143,32 @@ public class Board : MonoBehaviour
     {
         //set Text mesh pro text
         textOBJ.text = text;
+    }
+    
+    public void displayInstructions(string text)
+    {
+        //set Text mesh pro text
+        textOBJ.text = text;
+    }
+
+    public void update()
+    {
+        if (!player.isHandFull())
+        {
+            switch (player.hand.Count)
+            {
+                case 0:
+                    displayInstructions("Vis dit første kort!");
+                    break;
+                case 1: 
+                    displayInstructions("Vis dit andet kort!");
+                    break;
+                case 2:
+                    displayInstructions("Du er færdig. Du har {INDSÆT}");
+                    break;
+            }
+        } 
+        
+
     }
 }
