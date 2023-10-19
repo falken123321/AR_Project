@@ -11,52 +11,22 @@ namespace CardLogic
         public Transform cardParent;
         public Sprite[] cardSprites;
         public Deck deck1;
-        public int smilr;
 
         public void ShowFlop()
         {
-            if (deck1 == null)
-            {
-                Debug.LogError("Deck null!");
-                return;
-            }
-
             var cards = deck1.DrawRandomFlopCards();
     
-            if (cards == null || cards.Count == 0)
-            {
-                Debug.LogError("0 cards were drawn!");
-                return;
-            }
-
             foreach (var card in cards)
             {
-                GameObject cardObj = Instantiate(cardPrefab, cardParent);
-
-                if (cardObj == null)
-                {
-                    Debug.LogError("Failed to instantiate card.");
-                    continue;
-                }
+                GameObject cardObj = Instantiate(cardPrefab, cardParent.position, Quaternion.identity, cardParent);
         
                 Sprite newSprite = cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
-
-                if (newSprite == null)
-                {
-                    Debug.LogError("Failed to find sprite for card: " + card.type.ToString() + "_" + card.suit.ToString());
-                    continue;
-                }
-
-                var display = cardObj.GetComponent<CardDisplay>();
-                if (display == null)
-                {
-                    Debug.LogError("Card object does not have a CardDisplay component.");
-                    continue;
-                }
-
-                display.SetCardSprite(newSprite);
+                cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
+                
+                cardObj.transform.position += new Vector3(4f * cards.IndexOf(card), 0, 0); 
             }
         }
+        
 
 
         public void ShowNextCard()
