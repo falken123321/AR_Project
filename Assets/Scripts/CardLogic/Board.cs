@@ -5,6 +5,7 @@ using System.Linq;
 using CardEums;
 using Hands;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Hands
@@ -44,6 +45,7 @@ public class Board : MonoBehaviour
         this.boardCards = new List<Card>(5);
         this.combinedCard = new List<Card>(7);
         this.play = Plays.None;
+        displayInstructions("Hand size: " + this.player.hand.Count );
 
     }
 
@@ -331,12 +333,11 @@ public class Board : MonoBehaviour
         //set Text mesh pro text
         instructions.text = text;
     }
-
+    
     private int x = 0;
-    public void update()
+    public void UpdateRead()
     {
-        x++;
-        displayInstructions("IN UPDATE: "+x);
+        displayInstructions("Han9d size: " + this.player.hand.Count );
         
         /*switch (player.hand.Count)
         {

@@ -42,13 +42,9 @@ public class PlaceTrackedImages : MonoBehaviour
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
 
-        boardScript.displayStatus("Status: Regia");
-
         // Loop through all new tracked images that have been detected
         foreach (var trackedImage in eventArgs.added)
         {
-            // Get the name of the reference image
-            boardScript.displayStatus("Status: Registed Card pti");
             var imageName = trackedImage.referenceImage.name;
             // Now loop over the array of prefabs
             foreach (var curPrefab in ArPrefabs)
@@ -58,7 +54,6 @@ public class PlaceTrackedImages : MonoBehaviour
                 if (string.Compare(curPrefab.name, imageName, StringComparison.OrdinalIgnoreCase) == 0
                     && !_instantiatedPrefabs.ContainsKey(imageName))
                 {
-                    boardScript.displayStatus("Status: Registed Card pti");
                     // Instantiate the prefab, parenting it to the ARTrackedImage
                     var newPrefab = Instantiate(curPrefab, trackedImage.transform);
                     
@@ -74,6 +69,7 @@ public class PlaceTrackedImages : MonoBehaviour
                     
                     // Add the created prefab to our array
                     _instantiatedPrefabs[imageName] = newPrefab;
+                    
                 }
             }
         }
