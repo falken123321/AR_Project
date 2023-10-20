@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CardEums;
 using Hands;
 using TMPro;
@@ -45,7 +46,7 @@ public class Board : MonoBehaviour
         this.combinedCard = new List<Card>(7);
         this.play = Plays.None;
         displayStatus("Status: Game start");
-        
+
     }
 
     public void Reset()
@@ -57,29 +58,33 @@ public class Board : MonoBehaviour
     {
 
     }
-    
+
     void RegisterBoard()
     {
 
     }
 
 
-    //STARTER P� HAND FUNCTIONERNE -------------------------------------------------
+    //STARTER PÅ HAND FUNCTIONERNE -------------------------------------------------
     //
     public void CheckHand()
     {
         if (this.player == null) return;
-        //K�r alle functionerne under
+        //Kør alle functionerne under
+        //Kunne faktisk gøre noget her på et tidspunkt med at vægten af dem
 
         CheckPair();
         CheckThreeOfAKind();
-
-        
+        CheckFullHouse();
+        CheckFlush();
+        CheckStraight();
+        CheckStraightFlush();
+        CheckRoyalFlush();
     }
 
-    //Retunere list af pair, s� man kan se hvilke kort er pairet
-    //+ mulighed for at f� en Liste af lister af cards for at f� flere pairs
-    void CheckPair()
+    //Retunere list af pair, så man kan se hvilke kort er pairet
+    //+ mulighed for at få en Liste af lister af cards for at få flere pairs
+    bool CheckPair()
     {
         var pairs = 0;
         List<List<Card>> cardPairs = new List<List<Card>>();
@@ -95,10 +100,11 @@ public class Board : MonoBehaviour
         }
 
         //Check hver kort p� h�nd om det pair med en p� board
-        foreach (Card card in this.player.hand) { 
-            foreach(Card boardCard in this.boardCards)
+        foreach (Card card in this.player.hand)
+        {
+            foreach (Card boardCard in this.boardCards)
             {
-                if(card.type == boardCard.type)
+                if (card.type == boardCard.type)
                 {
                     pairs++;
                     List<Card> pair = new List<Card>();
@@ -108,6 +114,15 @@ public class Board : MonoBehaviour
                 }
             }
         }
+
+        if (pairs > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     bool CheckThreeOfAKind()
@@ -115,7 +130,7 @@ public class Board : MonoBehaviour
         int[] suitsCount = { 0, 0, 0, 0 };
         bool hasThreeOfAKind = false;
 
-        foreach(Card card in this.combinedCard)
+        foreach (Card card in this.combinedCard)
         {
             switch (card.suit)
             {
@@ -130,7 +145,7 @@ public class Board : MonoBehaviour
             }
         }
 
-        foreach(int i in suitsCount)
+        foreach (int i in suitsCount)
         {
             if (i == 3) hasThreeOfAKind = true;
         }
@@ -139,12 +154,186 @@ public class Board : MonoBehaviour
         return hasThreeOfAKind;
     }
 
+    bool CheckStraight()
+    {
+        //Bare tæl op på en sorteret liste
+
+        List<Card> sorted = this.combinedCard.OrderBy(card => (int)card.type).ToList();
+
+        int Amount = 1;
+        CardType previousCardType = sorted[0].type;
+
+        for (int i = 1; i < sorted.Count; i++)
+        {
+            CardType currentCardType = sorted[i].type;
+
+            if ((int)currentCardType == (int)previousCardType + 1)
+            {
+                Amount++;
+            }
+            else
+            {
+                Amount = 1; 
+            }
+
+            if (Amount >= 5)
+            {
+                return true;
+            }
+
+            previousCardType = currentCardType;
+        }
+
+        return false; 
+    }
+
+    bool CheckFullHouse()
+    {
+        int[] typeCounts = new int[14]; 
+
+        //Incrementer kortet i arrayet hvis der er flere af dem
+        foreach (Card card in this.combinedCard)
+        {
+            typeCounts[(int)card.type]++;
+        }
+
+        bool hasThreeOfAKind = false;
+        bool hasPair = false;
+
+        //Check for om der er 3ofakind
+        for (int i = 1; i < typeCounts.Length; i++)
+        {
+            if (typeCounts[i] == 3)
+            {
+                hasThreeOfAKind = true;
+                break; //stop
+            }
+        }
+
+        //Check for om der er par
+        for (int i = 1; i < typeCounts.Length; i++)
+        {
+            if (typeCounts[i] == 2)
+            {
+                hasPair = true;
+                break;
+            }
+        }
+
+        //Kombi = fullhus
+        return hasThreeOfAKind && hasPair;
+    }
+
+    bool CheckFlush()
+    {
+        //Lidt usikker på den her, men tror det virker??
+        //Tror måske det fucker, hvis de ikke er i række? - bare tilføj en suit sorteret række if not
+        Suits flushSuit = Suits.Hearts;
+
+        foreach (Card card in this.combinedCard)
+        {
+            if (flushSuit == Suits.Hearts) 
+            {
+                flushSuit = card.suit;
+            }
+            else if (flushSuit != card.suit) 
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool CheckStraightFlush()
+    {
+        Suits flushSuit = Suits.Hearts;
+        int amount = 1;
+        CardType previous = this.combinedCard[0].type;
+
+        foreach (Card card in this.combinedCard)
+        {
+            //Tjek suit (flush)
+            if (flushSuit == Suits.Hearts) 
+            {
+                flushSuit = card.suit;
+            }
+            else if (flushSuit != card.suit) 
+            {
+                return false;
+            }
+
+            //Tjek type (straight)
+            if ((int)card.type == (int)previous + 1)
+            {
+                amount++;
+            }
+            else if (card.type != previous) 
+            {
+                amount = 1;
+            }
+
+            if (amount >= 5) //5 af samme suit i straihgt
+            {
+                return true;
+            }
+
+            previous = card.type;
+        }
+
+        return false; 
+    }
+
+    bool CheckRoyalFlush()
+    {
+        Suits flushSuit = Suits.Hearts; 
+        int amount = 0; 
+
+        foreach (Card card in this.combinedCard)
+        {
+            //flush delen
+            if (flushSuit == Suits.Hearts) 
+            {
+                flushSuit = card.suit;
+            }
+            else if (flushSuit != card.suit) 
+            {
+                return false;
+            }
+
+            // Tjek om topdawgs i kort listen 
+            switch (card.type)
+            {
+                case CardType.Ten:
+                case CardType.Jack:
+                case CardType.Queen:
+                case CardType.King:
+                case CardType.A:
+                    amount++;
+                    break;
+                default:
+                    amount = 0;
+                    break;
+            }
+
+            if (amount >= 5)
+            {
+                return true;
+            }
+        }
+
+        return false; 
+    }
+
+
+    //END HAND FUNCTIONERNE -------------------------------------------------
+
     public void displayStatus(string text)
     {
         //set Text mesh pro text
         textOBJ.text = text;
     }
-    
+
     public void displayInstructions(string text)
     {
         //set Text mesh pro text
@@ -160,15 +349,17 @@ public class Board : MonoBehaviour
                 case 0:
                     displayInstructions("Vis dit første kort!");
                     break;
-                case 1: 
+                case 1:
                     displayInstructions("Vis dit andet kort!");
                     break;
             }
-        } else {
+        }
+        else
+        {
             //Calculate something (:
             displayInstructions("Du er færdig. Du har {ADD PAIR OR WHATEVER}");
-        } 
-        
+        }
+
 
     }
 }
