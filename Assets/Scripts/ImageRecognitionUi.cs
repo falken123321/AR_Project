@@ -35,8 +35,7 @@ public class ImageRecognitionUi : MonoBehaviour
             Counter++;
             Debug.Log("Image added: " + trackedImage.referenceImage.name + "Counter = " + Counter);
             UpdateRecognitionText(trackedImage);
-
-            boardScript.displayStatus("Status: Registed Card");
+            
             //Adskil reffrence name og lav carded ud af det
             var imageName = trackedImage.referenceImage.name;
             var imageNameCpy = imageName.Split('_');

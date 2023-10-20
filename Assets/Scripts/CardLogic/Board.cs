@@ -31,8 +31,7 @@ public class Board : MonoBehaviour
     private List<Card> boardCards; //Kort p� bordet
     public Player player; // Dine kort
     private Plays play; // Viser om du har et play
-
-    public TextMeshProUGUI textOBJ;
+    
     public TextMeshProUGUI instructions;
 
     private List<Card> combinedCard;
@@ -45,13 +44,12 @@ public class Board : MonoBehaviour
         this.boardCards = new List<Card>(5);
         this.combinedCard = new List<Card>(7);
         this.play = Plays.None;
-        displayStatus("Status: Game start");
 
     }
 
     public void Reset()
     {
-        displayStatus("Status: Game reset");
+        //Add logic
     }
 
     void RegisterHand()
@@ -328,37 +326,31 @@ public class Board : MonoBehaviour
 
     //END HAND FUNCTIONERNE -------------------------------------------------
 
-    public void displayStatus(string text)
-    {
-        //set Text mesh pro text
-        textOBJ.text = text;
-    }
-
     public void displayInstructions(string text)
     {
         //set Text mesh pro text
         instructions.text = text;
     }
 
+    private int x = 0;
     public void update()
     {
-        if (!player.isHandFull())
+        x++;
+        displayInstructions("IN UPDATE: "+x);
+        
+        /*switch (player.hand.Count)
         {
-            switch (player.hand.Count)
-            {
-                case 0:
-                    displayInstructions("Vis dit første kort!");
-                    break;
-                case 1:
-                    displayInstructions("Vis dit andet kort!");
-                    break;
-            }
-        }
-        else
-        {
-            //Calculate something (:
-            displayInstructions("Du er færdig. Du har {ADD PAIR OR WHATEVER}");
-        }
+            case 0:
+                displayInstructions("Vis dit første kort!");
+                break;
+            case 1: 
+                displayInstructions("Vis dit andet kort!");
+                break;
+            default:
+                //Calculate something (:
+                displayInstructions("Du er færdig. Du har {ADD PAIR OR WHATEVER}");
+                break;
+        }*/
 
 
     }
