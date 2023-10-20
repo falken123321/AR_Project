@@ -17,14 +17,20 @@ namespace CardLogic
         public Deck deck1;
         public TextMeshProUGUI button;
         public List<Card> drawnCards = new List<Card>();
+        private float placement;
 
         private int cardsShown = 0;
 
         public void ShowFlop()
         {
             var cards = deck1.DrawRandomFlopCards();
+            Debug.Log(cards.Count);
             Debug.Log(cardsShown);
-            if (cardsShown >= 3)
+            if (cardsShown >= 5) 
+            {
+                Debug.Log("Alle kort er lavt");
+            }
+            else if (cardsShown >= 3) 
             {
                 button.text = "Show Final Card";
                 Debug.Log("funktionen Show Next bliver kaldt fra ShowFlop");
@@ -62,18 +68,32 @@ namespace CardLogic
         }
 
 
+        public void reset()
+        {
+            foreach (Transform child in cardParent)
+            {
+                Destroy(child.gameObject);
+            }
+
+            
+            button.text = "Show Flop";
+            cardsShown = 0;
+
+        }
+
         public void ShowNextCard()
             {
-                Debug.Log("funktionen Show Next");
-                var card = deck1.DrawNextCard();
-                GameObject cardObj = Instantiate(cardPrefab, cardParent);
+                    Debug.Log("funktionen Show Next");
+                    var card = deck1.DrawNextCard();
+                    GameObject cardObj = Instantiate(cardPrefab, cardParent);
+    
+                    Sprite newSprite = cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
+                    cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
 
-                Sprite newSprite =
-                    cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
-
-                cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
-                drawnCards.Add(card);
+                    
+                    cardObj.transform.position = cardParent.position + new Vector3(4f * cardsShown, 0, 0);
+                    cardsShown++;
+                }
             }
         }
 
-    }
