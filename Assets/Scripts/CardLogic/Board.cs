@@ -148,7 +148,7 @@ public class Board : MonoBehaviour
     public void displayInstructions(string text)
     {
         //set Text mesh pro text
-        textOBJ.text = text;
+        instructions.text = text;
     }
 
     public void update()
@@ -163,10 +163,10 @@ public class Board : MonoBehaviour
                 case 1: 
                     displayInstructions("Vis dit andet kort!");
                     break;
-                case 2:
-                    displayInstructions("Du er færdig. Du har {INDSÆT}");
-                    break;
             }
+        } else {
+            //Calculate something (:
+            displayInstructions("Du er færdig. Du har {ADD PAIR OR WHATEVER}");
         } 
         
 
