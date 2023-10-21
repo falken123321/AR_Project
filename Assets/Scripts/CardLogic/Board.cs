@@ -46,7 +46,27 @@ public class Board : MonoBehaviour
         this.combinedCard = new List<Card>(7);
         this.play = Plays.None;
         displayInstructions("Hand size: " + this.player.hand.Count );
+        DrawFlop();
+    }
 
+    public List<Card> DrawFlop()
+    {
+        //ENSURE THAT PLAYER CARDS ARE POPPED FROM DECK FIRST
+        DealerDeck.PopCard(player.hand[0]);
+        DealerDeck.PopCard(player.hand[1]);
+
+        List<Card> cards = DealerDeck.DrawRandomFlopCards();
+        cards.ForEach(card =>
+        {
+            boardCards.Add(card);
+        });
+        
+        return cards;
+    }
+
+    public List<Card> getBoardCards()
+    {
+        return boardCards;
     }
 
     public void Reset()
