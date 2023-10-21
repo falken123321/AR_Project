@@ -27,16 +27,16 @@ public class ImageRecognitionUi : MonoBehaviour
 
     void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
+
+
         Debug.Log("OnTrackedImagesChanged called");
 
         foreach (var trackedImage in eventArgs.added)
         {
-            
             Counter++;
             Debug.Log("Image added: " + trackedImage.referenceImage.name + "Counter = " + Counter);
             UpdateRecognitionText(trackedImage);
-
-            boardScript.displayStatus("Status: Registed Card");
+            
             //Adskil reffrence name og lav carded ud af det
             var imageName = trackedImage.referenceImage.name;
             var imageNameCpy = imageName.Split('_');
@@ -48,14 +48,18 @@ public class ImageRecognitionUi : MonoBehaviour
             // Register the new card in the codebase
             Card c = new Card(type, suit);
             boardScript.player.RegisterCard(c);
-            boardScript.update();
+            boardScript.displayInstructions("TRIPPLETESTTESTTEST");
         }
-
+        
         foreach (var trackedImage in eventArgs.updated)
         {
             Debug.Log("Image updated: " + trackedImage.referenceImage.name);
             UpdateRecognitionText(trackedImage);
+            //boardScript.UpdateRead();
+            //boardScript.displayInstructions("DOBBELTESTTESTTEST");
         }
+        
+        boardScript.UpdateRead();
     }
 
     void UpdateRecognitionText(ARTrackedImage trackedImage)
