@@ -44,19 +44,18 @@ namespace CardLogic
                     Debug.Log(cards.Count);
                     GameObject cardObj = Instantiate(cardPrefab, cardParent.position, Quaternion.identity, cardParent);
 
-                    Sprite newSprite =
-                        cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
+                    Sprite newSprite = cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
                     cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
 
-                    cardObj.transform.position += new Vector3(4f * cards.IndexOf(card), 0, 0);
-                    drawnCards.Add(card);
+                    // Setting a fixed position for the card.
+                    cardObj.transform.position = new Vector3(0, 0, 0);
 
+                    drawnCards.Add(card);
                     if (cardsShown == 3)
                     {
                         button.text = "Show Next Card";
                     }
                 }
-
             }
         }
         
@@ -82,18 +81,19 @@ namespace CardLogic
         }
 
         public void ShowNextCard()
-            {
-                    Debug.Log("funktionen Show Next");
-                    var card = deck1.DrawNextCard();
-                    GameObject cardObj = Instantiate(cardPrefab, cardParent);
-    
-                    Sprite newSprite = cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
-                    cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
+        {
+            Debug.Log("funktionen Show Next");
+            var card = deck1.DrawNextCard();
+            GameObject cardObj = Instantiate(cardPrefab, cardParent);
 
-                    
-                    cardObj.transform.position = cardParent.position + new Vector3(4f * cardsShown, 0, 0);
-                    cardsShown++;
-                }
+            Sprite newSprite = cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
+            cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
+
+            // Setting a fixed position for the card.
+            cardObj.transform.position = new Vector3(0, 0, 0);
+
+            cardsShown++;
+        }
             }
         }
 
