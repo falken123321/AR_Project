@@ -14,7 +14,7 @@ namespace CardLogic
         public GameObject cardPrefab;
         public Transform cardParent;
         public Sprite[] cardSprites;
-        public Deck deck1;
+        public Board dealer; //FIXED Bruger instansen fra GOD, så det er den samme DECK & HAND vi snakker om.
         public TextMeshProUGUI button;
         public List<Card> drawnCards = new List<Card>();
         private float placement;
@@ -23,7 +23,7 @@ namespace CardLogic
 
         public void ShowFlop()
         {
-            var cards = deck1.DrawRandomFlopCards();
+            var cards = dealer.getBoardCards();
             Debug.Log(cards.Count);
             Debug.Log(cardsShown);
             if (cardsShown >= 5)
@@ -47,7 +47,7 @@ namespace CardLogic
                         cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
                     cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
 
-                    cardsShown++; // Inkrementer tælleren for hvert kort, du instantierer
+                    cardsShown++; 
                 }
             }
         }
@@ -75,17 +75,15 @@ namespace CardLogic
 
         public void ShowNextCard()
         {
-
-            var card = deck1.DrawNextCard();
-
+            Debug.Log("funktionen Show Next");
+            var card = dealer.drawNextDealerCard();
             Vector3 spawnPosition = cardParent.position + new Vector3(cardsShown*100, 0, 0);
             GameObject cardObj = Instantiate(cardPrefab, spawnPosition, Quaternion.identity, cardParent);
-
             Sprite newSprite =
                 cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
             cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
 
-            cardsShown++; // Inkrementer tæl
+            cardsShown++;
         }
     }
 }
