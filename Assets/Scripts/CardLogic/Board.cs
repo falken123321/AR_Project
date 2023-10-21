@@ -51,11 +51,13 @@ public class Board : MonoBehaviour
 
     public List<Card> DrawFlop()
     {
+        if(player.isHandFull()){
         //ENSURE THAT PLAYER CARDS ARE POPPED FROM DECK FIRST
         DealerDeck.PopCard(player.hand[0]);
         DealerDeck.PopCard(player.hand[1]);
-
+        }
         List<Card> cards = DealerDeck.DrawRandomFlopCards();
+       // Debug.Log(cards);
         cards.ForEach(card =>
         {
             boardCards.Add(card);
