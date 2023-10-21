@@ -69,6 +69,13 @@ public class Board : MonoBehaviour
         return boardCards;
     }
 
+    public Card drawNextDealerCard() //Vi kunne også bare retunere listen tbf
+    {
+        Card card = DealerDeck.DrawNextCard();
+        boardCards.Add(card);
+        return card;
+    }
+
     public void Reset()
     {
         //Add logic
