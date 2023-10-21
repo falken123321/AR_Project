@@ -26,11 +26,11 @@ namespace CardLogic
             var cards = deck1.DrawRandomFlopCards();
             Debug.Log(cards.Count);
             Debug.Log(cardsShown);
-            if (cardsShown >= 5) 
+            if (cardsShown >= 5)
             {
                 Debug.Log("Alle kort er lavt");
             }
-            else if (cardsShown >= 3) 
+            else if (cardsShown >= 3)
             {
                 button.text = "Show Final Card";
                 Debug.Log("funktionen Show Next bliver kaldt fra ShowFlop");
@@ -40,26 +40,19 @@ namespace CardLogic
             {
                 foreach (var card in cards)
                 {
-                    cardsShown++;
-                    Debug.Log(cards.Count);
-                    GameObject cardObj = Instantiate(cardPrefab, cardParent.position, Quaternion.identity, cardParent);
+                    Vector3 spawnPosition = cardParent.position + new Vector3(cardsShown*100, 0, 0);
+                    GameObject cardObj = Instantiate(cardPrefab, spawnPosition, Quaternion.identity, cardParent);
 
-                    Sprite newSprite = cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
+                    Sprite newSprite =
+                        cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
                     cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
 
-                    // Setting a fixed position for the card.
-                    cardObj.transform.position = new Vector3(0, 0, 0);
-
-                    drawnCards.Add(card);
-                    if (cardsShown == 3)
-                    {
-                        button.text = "Show Next Card";
-                    }
+                    cardsShown++; // Inkrementer tælleren for hvert kort, du instantierer
                 }
             }
         }
-        
-        
+
+
         public List<Card> GetDrawnCards()
         {
             Debug.Log(drawnCards);
@@ -74,7 +67,7 @@ namespace CardLogic
                 Destroy(child.gameObject);
             }
 
-            
+
             button.text = "Show Flop";
             cardsShown = 0;
 
@@ -82,18 +75,18 @@ namespace CardLogic
 
         public void ShowNextCard()
         {
-            Debug.Log("funktionen Show Next");
-            var card = deck1.DrawNextCard();
-            GameObject cardObj = Instantiate(cardPrefab, cardParent);
 
-            Sprite newSprite = cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
+            var card = deck1.DrawNextCard();
+
+            Vector3 spawnPosition = cardParent.position + new Vector3(cardsShown*100, 0, 0);
+            GameObject cardObj = Instantiate(cardPrefab, spawnPosition, Quaternion.identity, cardParent);
+
+            Sprite newSprite =
+                cardSprites.FirstOrDefault(s => s.name == card.type.ToString() + "_" + card.suit.ToString());
             cardObj.GetComponent<CardDisplay>().SetCardSprite(newSprite);
 
-            // Setting a fixed position for the card.
-            cardObj.transform.position = new Vector3(0, 0, 0);
-
-            cardsShown++;
+            cardsShown++; // Inkrementer tæl
         }
-            }
-        }
+    }
+}
 

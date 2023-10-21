@@ -2,16 +2,19 @@
 
 namespace CardLogic
 {
- public class CardDisplay : MonoBehaviour
- {
-     public SpriteRenderer spriteRenderer;
- 
-     public void SetCardSprite(Sprite newSprite)
-     {
+    using UnityEngine;
+    using UnityEngine.UI;
 
-         spriteRenderer.sprite = newSprite;
-         Debug.Log("Card sprite set to: " + newSprite.name + " for " + gameObject.name);
-     }
- }
+    public class CardDisplay : MonoBehaviour
+    {
+        public Image cardImage;
+
+        public void SetCardSprite(Sprite newSprite)
+        {
+            cardImage.sprite = newSprite;
+            Debug.Log("Card sprite set to: " + newSprite.name + " for " + gameObject.name);
+        }
+    }
+
 
 }
