@@ -18,8 +18,14 @@ namespace CardLogic
         public TextMeshProUGUI button;
         public List<Card> drawnCards = new List<Card>();
         private float placement;
+        private Board boardScript;
 
         private int cardsShown = 0;
+
+        private void Start()
+        {
+            boardScript = GameObject.FindGameObjectWithTag("GOD").GetComponent<Board>();
+        }
 
         public void ShowFlop()
         {
@@ -50,6 +56,7 @@ namespace CardLogic
                     cardsShown++; 
                 }
             }
+            boardScript.updateInstructions();
         }
 
 
@@ -66,7 +73,6 @@ namespace CardLogic
             {
                 Destroy(child.gameObject);
             }
-
 
             button.text = "Show Flop";
             cardsShown = 0;
