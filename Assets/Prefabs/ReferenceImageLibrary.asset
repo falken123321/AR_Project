@@ -28,12 +28,12 @@ MonoBehaviour:
     m_Name: Queen_Diamonds
     m_Texture: {fileID: 2800000, guid: bcce78d89600c2b4b8a2db49ed119759, type: 3}
   - m_SerializedGuid:
-      m_GuidLow: 4917571206365617925
-      m_GuidHigh: 4458346793615067581
+      m_GuidLow: 4920359084526430289
+      m_GuidHigh: 15977601581971127444
     m_SerializedTextureGuid:
-      m_GuidLow: 3784392668127866044
-      m_GuidHigh: 8302064335968254649
-    m_Size: {x: 1, y: 0.6666667}
+      m_GuidLow: 6481923044664749638
+      m_GuidHigh: 53865314069464617
+    m_Size: {x: 1, y: 1.23}
     m_SpecifySize: 1
-    m_Name: ALLAN2
-    m_Texture: {fileID: 2800000, guid: c25aacbcdd143484b9bad3ff86db3673, type: 3}
+    m_Name: King_Diamonds
+    m_Texture: {fileID: 2800000, guid: 9aa92e466aaa59f42946d3be375ebf00, type: 3}

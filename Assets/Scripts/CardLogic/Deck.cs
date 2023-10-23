@@ -38,6 +38,12 @@ public class Deck : MonoBehaviour
 
     public List<Card> DrawRandomFlopCards()
     {
+
+  
+        Debug.Log("POPULATING");
+        PopulateDeck();
+ 
+
         List<Card> drawnCards = new List<Card>();
         System.Random random = new System.Random();
 

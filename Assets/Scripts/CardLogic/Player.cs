@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player
@@ -11,7 +12,11 @@ public class Player
     {
         this.hand = new List<Card>();
     }
-    
+
+    public void emptyHand()
+    {
+        this.hand = new List<Card>();
+    }
     public List<Card> SetCards(Card[] cards)
     {
         hand.AddRange(cards);
