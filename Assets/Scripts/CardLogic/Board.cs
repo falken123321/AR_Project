@@ -59,7 +59,6 @@ public class Board : MonoBehaviour
         DealerDeck.PopCard(player.hand[1]);
         }
         List<Card> cards = DealerDeck.DrawRandomFlopCards();
-       // Debug.Log(cards);
         cards.ForEach(card =>
         {
             boardCards.Add(card);
@@ -67,9 +66,13 @@ public class Board : MonoBehaviour
         
         return cards;
     }
-
+    
     public List<Card> getBoardCards()
     {
+        if (boardCards.Count == 0)
+        {
+            boardCards = DealerDeck.DrawRandomFlopCards();
+        }
         return boardCards;
     }
 
@@ -85,6 +88,7 @@ public class Board : MonoBehaviour
         this.combinedCard = new List<Card>();
         this.player.emptyHand();
         this.boardCards = new List<Card>();
+        DrawFlop();
         updateInstructions();
     }
 

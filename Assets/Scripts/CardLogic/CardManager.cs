@@ -30,6 +30,7 @@ namespace CardLogic
         public void ShowFlop()
         {
             var cards = dealer.getBoardCards();
+            
             Debug.Log(cards.Count);
             Debug.Log(cardsShown);
             if (cardsShown >= 5)
