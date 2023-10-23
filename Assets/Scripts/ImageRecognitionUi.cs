@@ -14,6 +14,7 @@ public class ImageRecognitionUi : MonoBehaviour
     private int Counter;
     //Reffrence to boardScript
     public Board boardScript;
+    public ARSession ARSession;
 
     private void OnEnable()
     {
@@ -64,10 +65,12 @@ public class ImageRecognitionUi : MonoBehaviour
 
     void UpdateRecognitionText(ARTrackedImage trackedImage)
     {
-        
-            recognitionText.text = "Recognized: " + trackedImage.referenceImage.name;
+        recognitionText.text = "Recognized: " + trackedImage.referenceImage.name;
             Debug.Log("Text updated to: " + recognitionText.text);
         
     }
-
+    
+    
+    
+    void
 }
